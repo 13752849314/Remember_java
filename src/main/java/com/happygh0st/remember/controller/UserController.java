@@ -1,5 +1,6 @@
 package com.happygh0st.remember.controller;
 
+import com.happygh0st.remember.common.Results;
 import com.happygh0st.remember.entity.User;
 import com.happygh0st.remember.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,9 @@ public class UserController {
     }
 
     @GetMapping("/")
-    List<User> test() {
-        return userService.getAllUsers();
+    Results test() {
+        List<User> users = userService.getAllUsers();
+        return Results.StatusOk().addData("users", users);
     }
 
 }
