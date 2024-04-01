@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @TableName("users")
@@ -34,6 +35,7 @@ public class User {
     private String email;
 
     @TableField("birthday")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date birthday;
 
     @TableField("openId")

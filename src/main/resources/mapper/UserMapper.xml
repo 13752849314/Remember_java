@@ -3,4 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.happygh0st.remember.mapper.UserMapper">
 
+    <select id="getAllUser" resultType="com.happygh0st.remember.entity.User">
+        select *
+        from `users`
+        where `deleted_at` IS NULL
+    </select>
+    <select id="getUserByUsername" resultType="com.happygh0st.remember.entity.User">
+        select *
+        from `users`
+        where `username` = #{username}
+          and `deleted_at` is NULL
+    </select>
 </mapper>

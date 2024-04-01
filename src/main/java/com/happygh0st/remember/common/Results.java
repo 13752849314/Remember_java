@@ -11,7 +11,7 @@ public class Results {
     private Map<String, Object> data;
 
     public Results() {
-        this.data = new HashMap<String, Object>();
+        this.data = new HashMap<>();
     }
 
     public static Results StatusOk() {
@@ -34,6 +34,11 @@ public class Results {
 
     public Results addData(String key, Object value) {
         data.put(key, value);
+        return this;
+    }
+
+    public Results setMessage(String message) {
+        data.put("message", message);
         return this;
     }
 }
