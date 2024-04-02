@@ -1,0 +1,6 @@
+###
+GET http://localhost:4090/user/user
+jwt: 1234
+
+###
+GET http://localhost:4090/user/user
