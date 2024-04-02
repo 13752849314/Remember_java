@@ -10,7 +10,7 @@ public interface UserService {
 
     List<User> getAllUser();
 
-    void Login(User user);
+    String Login(User user) throws Exception;
 
     void Registration(User user);
 }

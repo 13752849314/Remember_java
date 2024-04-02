@@ -3,11 +3,13 @@ package com.happygh0st.remember.service.impl;
 import com.happygh0st.remember.entity.User;
 import com.happygh0st.remember.mapper.UserMapper;
 import com.happygh0st.remember.service.UserService;
+import com.happygh0st.remember.utils.JwtUtils;
 import com.happygh0st.remember.utils.Util;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -30,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void Login(User user) {
+    public String Login(User user) throws Exception {
         User userDb = userMapper.getUserByUsername(user.getUsername());
         if (Objects.isNull(userDb)) {
             throw new RuntimeException("用户不存在");
@@ -39,6 +41,11 @@ public class UserServiceImpl implements UserService {
         if (!pass.equals(userDb.getPassword())) {
             throw new RuntimeException("密码错误");
         }
+        String token = JwtUtils.createToken(userDb);
+        System.out.println(token);
+        Map<String, Object> map = JwtUtils.checkToken(token);
+        System.out.println(map);
+        return token;
     }
 
     @Override
