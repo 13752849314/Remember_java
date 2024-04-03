@@ -4,7 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -28,12 +31,9 @@ public class UserUtils {
     public boolean deleteInfo(String username, String token) {
         return login.remove(username, token);
     }
-    public boolean deleteInfo(String username){
-        if (login.containsKey(username)) {
-            login.remove(username);
-            return true;
-        }
-        return false;
+
+    public void deleteInfo(String username) {
+        login.remove(username);
     }
 
     @Scheduled(cron = "* * 0/2 * * ?")

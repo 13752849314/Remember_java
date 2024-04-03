@@ -14,3 +14,6 @@ mybatis-plus:
     map-underscore-to-camel-case: false
 remember:
   key: happygh0st123456
+logging:
+  file:
+    path: E:\Remember\logs\
