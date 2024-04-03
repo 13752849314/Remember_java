@@ -6,6 +6,7 @@ import com.happygh0st.remember.common.Roles;
 import com.happygh0st.remember.entity.User;
 import com.happygh0st.remember.mapper.UserMapper;
 import com.happygh0st.remember.utils.JwtUtils;
+import com.happygh0st.remember.utils.UserUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,9 +24,11 @@ import java.util.Objects;
 public class RolesService {
 
     private final UserMapper userMapper;
+    private final UserUtils userUtils;
 
-    public RolesService(UserMapper userMapper) {
+    public RolesService(UserMapper userMapper, UserUtils userUtils) {
         this.userMapper = userMapper;
+        this.userUtils = userUtils;
     }
 
     @Around("@annotation(com.happygh0st.remember.common.Roles)")
@@ -37,11 +40,15 @@ public class RolesService {
             if (Objects.isNull(jwt) || jwt.isEmpty()) {
                 return Results.StatusErr().setMessage("请先登录");
             }
-            boolean authentication = Authentication(jwt, point);
-            if (authentication) {
-                return (Results) point.proceed();
+            try {
+                boolean authentication = Authentication(jwt, point);
+                if (authentication) {
+                    return (Results) point.proceed();
+                }
+                return Results.StatusErr().setMessage("权限不够");
+            } catch (Exception e) {
+                return Results.StatusErr().setMessage(e.getMessage());
             }
-            return Results.StatusErr().setMessage("权限不够");
         } else {
             return Results.StatusErr().setMessage("请先登录");
         }
@@ -58,12 +65,15 @@ public class RolesService {
         Method method = targetClass.getMethod(point.getSignature().getName(), param);
         Roles annotation = method.getAnnotation(Roles.class);
         Role value = annotation.value();
-        String valueInterface = value.getValue();
         Map<String, Object> map = JwtUtils.checkToken(jwt);
         int id = (int) map.get("id");
         String username = (String) map.get("username");
+        String info = userUtils.getInfo(username);
+        if (info == null || !info.equals(jwt)) {
+            throw new Exception("用户未登录或token过期");
+        }
         User user = userMapper.selectById(id);
         String roles = user.getRoles();
-        return roles.equals(valueInterface) && username.equals(user.getUsername());
+        return value.ge(roles) && username.equals(user.getUsername());
     }
 }

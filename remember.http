@@ -1,6 +1,57 @@
+# curl -i http://localhost:4090/user/login -X POST -H "Content-Type: application/json" -d '{"username": "admin"}'
+POST http://localhost:4090/user/register
+Content-Type: application/json
+
+{
+  "username": "admin1",
+  "password": "admin",
+  "phone": "123454",
+  "email": "12345@qq.com",
+  "birthday": "2022-09-12 01:12:12",
+  "roles": "admins"
+}
 ###
-GET http://localhost:4090/user/user
-jwt: 1234
+POST http://localhost:4090/user/register
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "user",
+  "phone": "123454",
+  "email": "12345@qq.com",
+  "birthday": "2022-09-12 01:12:12",
+  "roles": "user"
+}
 
 ###
+POST http://localhost:4090/user/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+###
+POST http://localhost:4090/user/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "user"
+}
+###
 GET http://localhost:4090/user/user
+jwt: vLmSJ6IZxfyR3tsm+rYPDJBrsBlUCZgP63R4XoBcEgBzj9iYeiIPttM0jaK3mZnlRVBg5jnsJNWWGDbggMCi2Q==
+
+###
+POST http://localhost:4090/user/logout
+jwt: vLmSJ6IZxfyR3tsm+rYPDJBrsBlUCZgP63R4XoBcEgBzj9iYeiIPttM0jaK3mZnlRVBg5jnsJNWWGDbggMCi2Q==
+
+###
+POST http://localhost:4090/user/delete
+jwt: vLmSJ6IZxfyR3tsm+rYPDJBrsBlUCZgP63R4XoBcEgCHbDD5QKJfy91S967zWRrARVBg5jnsJNWWGDbggMCi2Q==
+Content-Type: application/json
+
+{
+  "username": "user"
+}

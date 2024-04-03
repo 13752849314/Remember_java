@@ -16,4 +16,4 @@ remember:
   key: happygh0st123456
 logging:
   file:
-    path: classpath:/logs/
+    path: G:\Remember\logs\

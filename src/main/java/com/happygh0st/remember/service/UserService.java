@@ -13,4 +13,8 @@ public interface UserService {
     String Login(String username, String password) throws Exception;
 
     void Registration(User user);
+
+    void Logout(String username, String token);
+
+    void Delete(String controller, String username);
 }

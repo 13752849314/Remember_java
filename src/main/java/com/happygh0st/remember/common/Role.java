@@ -12,4 +12,10 @@ public enum Role {
         this.value = admins;
     }
 
+    public boolean ge(String value) {
+        if (value.equals(ADMINS.getValue())) return true;
+        if (this.value.equals(value)) return true;
+        return value.equals(ADMIN.getValue()) && this.value.equals(USER.getValue());
+    }
+
 }
