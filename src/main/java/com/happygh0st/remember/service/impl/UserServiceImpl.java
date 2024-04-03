@@ -32,20 +32,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String Login(User user) throws Exception {
-        User userDb = userMapper.getUserByUsername(user.getUsername());
+    public String Login(String username, String password) throws Exception {
+        User userDb = userMapper.getUserByUsername(username);
         if (Objects.isNull(userDb)) {
             throw new RuntimeException("用户不存在");
         }
-        String pass = Util.PasswordEncrypt(user.getPassword());
+        String pass = Util.PasswordEncrypt(password);
         if (!pass.equals(userDb.getPassword())) {
             throw new RuntimeException("密码错误");
         }
-        String token = JwtUtils.createToken(userDb);
-        System.out.println(token);
-        Map<String, Object> map = JwtUtils.checkToken(token);
-        System.out.println(map);
-        return token;
+
+        return JwtUtils.createToken(userDb);
     }
 
     @Override

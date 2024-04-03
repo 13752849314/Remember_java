@@ -5,11 +5,9 @@ import com.happygh0st.remember.common.Role;
 import com.happygh0st.remember.common.Roles;
 import com.happygh0st.remember.entity.User;
 import com.happygh0st.remember.service.UserService;
-import com.happygh0st.remember.utils.JwtUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -36,9 +34,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Results Login(@RequestBody User user) {
+    public Results Login(@RequestBody String username, @RequestBody String password) {
         try {
-            String token = userService.Login(user);
+            String token = userService.Login(username,password);
             return Results.StatusOk().setMessage("登录成功").addData("jwt", token);
         } catch (Exception e) {
             return Results.StatusErr().setMessage(e.getMessage());
