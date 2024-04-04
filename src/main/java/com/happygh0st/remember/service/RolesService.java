@@ -57,14 +57,15 @@ public class RolesService {
     private boolean Authentication(String jwt, ProceedingJoinPoint point) throws Exception {
         // 获取接口上的注解 value
         Class<?> targetClass = point.getTarget().getClass();
+        // 获取接口参数类型列表
         Object[] args = point.getArgs();
         Class<?>[] param = new Class[args.length];
         for (int i = 0; i < args.length; i++) {
             param[i] = args[i].getClass();
         }
-        Method method = targetClass.getMethod(point.getSignature().getName(), param);
-        Roles annotation = method.getAnnotation(Roles.class);
-        Role value = annotation.value();
+        Method method = targetClass.getMethod(point.getSignature().getName(), param); // 拿到接口方法
+        Roles annotation = method.getAnnotation(Roles.class); // 拿到接口上指定注解
+        Role value = annotation.value(); // 获取注解值
         Map<String, Object> map = JwtUtils.checkToken(jwt);
         int id = (int) map.get("id");
         String username = (String) map.get("username");
