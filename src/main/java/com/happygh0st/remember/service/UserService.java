@@ -3,6 +3,7 @@ package com.happygh0st.remember.service;
 import com.happygh0st.remember.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -19,4 +20,8 @@ public interface UserService {
     void Delete(String controller, String username);
 
     void ChangePassword(String oldPassword,String newPassword);
+
+    User getUserInfo();
+
+    void ChangeInfo(Map<String,String> map);
 }

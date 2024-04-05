@@ -91,4 +91,26 @@ public class UserController {
             return Results.StatusErr().setMessage(e.getMessage());
         }
     }
+
+    @GetMapping("/info")
+    @Roles()
+    public Results getUserInfo() {
+        try {
+            User userInfo = userService.getUserInfo();
+            return Results.StatusOk().setMessage("获取成功").addData("info", userInfo);
+        } catch (Exception e) {
+            return Results.StatusErr().setMessage(e.getMessage());
+        }
+    }
+
+    @PostMapping("/changeI")
+    @Roles()
+    public Results ChangeInfo(@RequestBody LinkedHashMap<String, String> map) {
+        try {
+            userService.ChangeInfo(map);
+            return Results.StatusOk().setMessage("信息修改成功");
+        } catch (Exception e) {
+            return Results.StatusErr().setMessage(e.getMessage());
+        }
+    }
 }

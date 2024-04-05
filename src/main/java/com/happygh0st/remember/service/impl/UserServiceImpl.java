@@ -1,5 +1,6 @@
 package com.happygh0st.remember.service.impl;
 
+import com.happygh0st.remember.common.Modifiable;
 import com.happygh0st.remember.common.Role;
 import com.happygh0st.remember.entity.User;
 import com.happygh0st.remember.mapper.UserMapper;
@@ -7,13 +8,20 @@ import com.happygh0st.remember.service.UserService;
 import com.happygh0st.remember.utils.JwtUtils;
 import com.happygh0st.remember.utils.UserUtils;
 import com.happygh0st.remember.utils.Util;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -61,6 +69,7 @@ public class UserServiceImpl implements UserService {
         user.setCreated_at(now);
         user.setUpdated_at(now);
         userMapper.insert(user);
+        log.info("新用户：{}注册成功", user.getUsername());
     }
 
     @Override
@@ -68,6 +77,7 @@ public class UserServiceImpl implements UserService {
         if (!userUtils.deleteInfo(username, token)) {
             throw new RuntimeException("用户已经退出");
         }
+        log.info("用户：" + username + "成功退出");
     }
 
     @Override
@@ -113,5 +123,48 @@ public class UserServiceImpl implements UserService {
         userMapper.updateById(user);
         // 退出登录
         Logout(user.getUsername(), request.getHeader("jwt"));
+    }
+
+    @Override
+    public User getUserInfo() {
+        HttpServletRequest request = userUtils.getRequest();
+        User user = (User) request.getAttribute("user");
+        return user.Desensitization();
+    }
+
+    @Override
+    public void ChangeInfo(Map<String, String> map) {
+        HttpServletRequest request = userUtils.getRequest();
+        User user = (User) request.getAttribute("user");
+        try {
+            // 拿到用户所有带指定注解的字段
+            List<Field> fields = Util.getFieldsWithAnnotation(User.class, Modifiable.class);
+            for (Field field : fields) {
+                String name = field.getName();
+                String s = map.get(name);
+                if (s == null) continue;
+                Modifiable modifiable = field.getDeclaredAnnotation(Modifiable.class);
+                if (modifiable.value()) { // 可修改
+                    field.setAccessible(true);
+                    if (modifiable.type() == String.class) {
+                        field.set(user, s);
+                    } else if (modifiable.type() == Date.class) {
+                        SimpleDateFormat format = new SimpleDateFormat(modifiable.pattern());
+                        Date date = format.parse(s);
+                        field.set(user, date);
+                    } else { //其它类型，需要该类型有一个接收String的构造器
+                        Class<?> clazz = modifiable.type();
+                        Constructor<?> constructor = clazz.getDeclaredConstructor(String.class);
+                        constructor.setAccessible(true);
+                        Object o = constructor.newInstance(s);
+                        field.set(user, o);
+                    }
+                }
+            }
+            user.setUpdated_at(userUtils.getLocalTime());
+            userMapper.updateById(user);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

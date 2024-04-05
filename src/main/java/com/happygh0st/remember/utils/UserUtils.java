@@ -22,7 +22,7 @@ public class UserUtils {
     public void addInfo(String username, String token) throws Exception {
         String s = login.get(username);
         if (s != null) {
-            throw new Exception("用户已经登录，请勿重复登录");
+            throw new Exception("用户已经登录，请勿重复登录\n" + "token:" + token);
         }
         login.put(username, token);
         log.info("用户：" + username + "成功登录");
