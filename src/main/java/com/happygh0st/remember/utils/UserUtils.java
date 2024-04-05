@@ -3,7 +3,11 @@ package com.happygh0st.remember.utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,5 +57,17 @@ public class UserUtils {
             login.remove(i);
         }
         log.info("当前在线用户：" + login.keySet());
+    }
+
+    public HttpServletRequest getRequest() {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (requestAttributes != null) {
+            return requestAttributes.getRequest();
+        }
+        throw new RuntimeException("请求失败");
+    }
+
+    public LocalDateTime getLocalTime() {
+        return LocalDateTime.now();
     }
 }

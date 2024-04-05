@@ -17,4 +17,6 @@ public interface UserService {
     void Logout(String username, String token);
 
     void Delete(String controller, String username);
+
+    void ChangePassword(String oldPassword,String newPassword);
 }

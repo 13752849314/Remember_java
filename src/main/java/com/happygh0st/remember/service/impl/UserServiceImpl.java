@@ -9,6 +9,7 @@ import com.happygh0st.remember.utils.UserUtils;
 import com.happygh0st.remember.utils.Util;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -92,5 +93,25 @@ public class UserServiceImpl implements UserService {
             }
             throw new RuntimeException("用户：" + controller + "成功删除用户：" + username);
         }
+    }
+
+    @Override
+    public void ChangePassword(String oldPassword, String newPassword) {
+        HttpServletRequest request = userUtils.getRequest();
+        User user = (User) request.getAttribute("user");
+        // 验证旧密码是否正确
+        if (!user.getPassword().equals(Util.PasswordEncrypt(oldPassword))) {
+            throw new RuntimeException("密码错误");
+        }
+        // 新旧密码不能相同
+        if (oldPassword.equals(newPassword)) {
+            throw new RuntimeException("新旧密码不能相同");
+        }
+        // 修改信息
+        user.setPassword(Util.PasswordEncrypt(newPassword));
+        user.setUpdated_at(userUtils.getLocalTime());
+        userMapper.updateById(user);
+        // 退出登录
+        Logout(user.getUsername(), request.getHeader("jwt"));
     }
 }

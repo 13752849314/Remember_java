@@ -80,4 +80,15 @@ public class UserController {
             return Results.StatusErr().setMessage(e.getMessage());
         }
     }
+
+    @PostMapping("/changeP")
+    @Roles()
+    public Results ChangePassword(@RequestBody LinkedHashMap<String, String> map) {
+        try {
+            userService.ChangePassword(map.get("old_password"), map.get("new_password"));
+            return Results.StatusOk().setMessage("密码修改成功，请重新登录");
+        } catch (Exception e) {
+            return Results.StatusErr().setMessage(e.getMessage());
+        }
+    }
 }
