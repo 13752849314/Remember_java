@@ -10,7 +10,6 @@ import com.happygh0st.remember.utils.Util;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -79,17 +78,19 @@ public class UserServiceImpl implements UserService {
         LocalDateTime now = LocalDateTime.now();
         user.setDeleted_at(now);
         user.setUpdated_at(now);
-        if (controller.equals(userRoles) && userCRoles.equals(Role.USER.getValue())) {
+        if (controller.equals(username)) {
             userMapper.updateById(user);
             userUtils.deleteInfo(username);
             throw new RuntimeException("注销成功");
-        }
-        if (userCRoles.equals(Role.ADMINS.getValue()) && !userRoles.equals(Role.ADMINS.getValue())) {
-            userMapper.updateById(user);
-        } else if (!userCRoles.equals(Role.ADMINS.getValue()) && userRoles.equals(Role.USER.getValue())) {
-            userMapper.updateById(user);
         } else {
-            throw new RuntimeException("用户：" + controller + "没有权限删除用户：" + username);
+            if (userCRoles.equals(Role.ADMINS.getValue()) && !userRoles.equals(Role.ADMINS.getValue())) {
+                userMapper.updateById(user);
+            } else if (userCRoles.equals(Role.ADMIN.getValue()) && userRoles.equals(Role.USER.getValue())) {
+                userMapper.updateById(user);
+            } else {
+                throw new RuntimeException("用户：" + controller + "没有权限删除用户：" + username);
+            }
+            throw new RuntimeException("用户：" + controller + "成功删除用户：" + username);
         }
     }
 }
