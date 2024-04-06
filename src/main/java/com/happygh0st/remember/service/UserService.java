@@ -23,5 +23,5 @@ public interface UserService {
 
     User getUserInfo();
 
-    void ChangeInfo(Map<String,String> map);
+    void ChangeUserInfo(Map<String,String> map);
 }

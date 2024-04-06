@@ -74,6 +74,9 @@ public class RolesService {
             throw new Exception("用户未登录或token过期");
         }
         User user = userMapper.selectById(id);
+        if (user == null) {
+            throw new Exception("该用户：" + username + "已经注销");
+        }
         request.setAttribute("user", user);
         String roles = user.getRoles();
         return value.ge(roles) && username.equals(user.getUsername());

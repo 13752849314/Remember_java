@@ -84,6 +84,9 @@ public class UserServiceImpl implements UserService {
     public void Delete(String controller, String username) {
         User userC = userMapper.getUserByUsername(controller);
         User user = userMapper.getUserByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("用户：" + username + "已经删除过了");
+        }
         String userCRoles = userC.getRoles();
         String userRoles = user.getRoles();
         LocalDateTime now = LocalDateTime.now();
@@ -92,6 +95,7 @@ public class UserServiceImpl implements UserService {
         if (controller.equals(username)) {
             userMapper.updateById(user);
             userUtils.deleteInfo(username);
+            log.info("用户：{}成功注销", controller);
             throw new RuntimeException("注销成功");
         } else {
             if (userCRoles.equals(Role.ADMINS.getValue()) && !userRoles.equals(Role.ADMINS.getValue())) {
@@ -99,9 +103,10 @@ public class UserServiceImpl implements UserService {
             } else if (userCRoles.equals(Role.ADMIN.getValue()) && userRoles.equals(Role.USER.getValue())) {
                 userMapper.updateById(user);
             } else {
+                log.info("用户：{}没有权限删除用户：{}", controller, username);
                 throw new RuntimeException("用户：" + controller + "没有权限删除用户：" + username);
             }
-            throw new RuntimeException("用户：" + controller + "成功删除用户：" + username);
+            log.info("用户：{}成功删除用户：{}", controller, username);
         }
     }
 
@@ -133,7 +138,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void ChangeInfo(Map<String, String> map) {
+    public void ChangeUserInfo(Map<String, String> map) {
         HttpServletRequest request = userUtils.getRequest();
         User user = (User) request.getAttribute("user");
         try {

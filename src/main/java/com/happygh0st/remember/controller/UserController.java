@@ -105,9 +105,9 @@ public class UserController {
 
     @PostMapping("/changeI")
     @Roles()
-    public Results ChangeInfo(@RequestBody LinkedHashMap<String, String> map) {
+    public Results ChangeUserInfo(@RequestBody LinkedHashMap<String, String> map) {
         try {
-            userService.ChangeInfo(map);
+            userService.ChangeUserInfo(map);
             return Results.StatusOk().setMessage("信息修改成功");
         } catch (Exception e) {
             return Results.StatusErr().setMessage(e.getMessage());
