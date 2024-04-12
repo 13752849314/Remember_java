@@ -9,4 +9,10 @@
         where `username` = #{username}
           and `deleted_at` is NULL
     </select>
+    <select id="getBillById" resultType="com.happygh0st.remember.entity.Bill">
+        select *
+        from `bills`
+        where `id` = #{id}
+          and `deleted_at` is NULL
+    </select>
 </mapper>

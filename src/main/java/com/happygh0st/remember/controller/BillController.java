@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Slf4j
@@ -42,5 +43,27 @@ public class BillController {
         User user = (User) request.getAttribute("user");
         List<Bill> bills = billService.getBillsByUsername(user.getUsername());
         return Results.StatusOk().setMessage("获取成功").addData("bills", bills);
+    }
+
+    @PostMapping("/delete/{id}")
+    @Roles()
+    public Results deleteBillById(@PathVariable("id") Integer id) {
+        try {
+            billService.deleteBillById(id);
+            return Results.StatusOk().setMessage("删除成功");
+        } catch (Exception e) {
+            return Results.StatusErr().setMessage(e.getMessage());
+        }
+    }
+
+    @PostMapping("/changeBI/{id}")
+    @Roles()
+    public Results changeBillInfoById(@PathVariable("id") Integer id, @RequestBody LinkedHashMap<String, String> map) {
+        try {
+            billService.changeBillInfoById(id, map);
+            return Results.StatusOk().setMessage("信息修改成功");
+        } catch (Exception e) {
+            return Results.StatusErr().setMessage(e.getMessage());
+        }
     }
 }

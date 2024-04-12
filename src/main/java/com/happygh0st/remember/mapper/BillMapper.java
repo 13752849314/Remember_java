@@ -11,4 +11,5 @@ public interface BillMapper extends BaseMapper<Bill> {
 
     List<Bill> getBillsByUsername(String username);
 
+    Bill getBillById(Integer id);
 }
