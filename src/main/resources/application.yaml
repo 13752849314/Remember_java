@@ -5,8 +5,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 123456
-    url: jdbc:mysql://192.168.1.100:3306/remember?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+    password: hg5200820
+    url: jdbc:mysql://127.0.0.1:3306/remember?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
@@ -16,4 +16,4 @@ remember:
   key: happygh0st123456
 logging:
   file:
-    path: G:\Remember\logs\
+    path: E:\Remember\logs\

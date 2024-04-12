@@ -1,6 +1,7 @@
 package com.happygh0st.remember.controller;
 
 import com.happygh0st.remember.common.Results;
+import com.happygh0st.remember.common.Role;
 import com.happygh0st.remember.common.Roles;
 import com.happygh0st.remember.entity.Bill;
 import com.happygh0st.remember.entity.User;
@@ -65,5 +66,12 @@ public class BillController {
         } catch (Exception e) {
             return Results.StatusErr().setMessage(e.getMessage());
         }
+    }
+
+    @GetMapping("/bills")
+    @Roles(Role.ADMINS)
+    public Results getAllBills() {
+        List<Bill> bills = billService.getAllBills();
+        return Results.StatusOk().setMessage("获取成功").addData("bills", bills);
     }
 }

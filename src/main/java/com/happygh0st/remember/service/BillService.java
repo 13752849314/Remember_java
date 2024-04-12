@@ -15,4 +15,6 @@ public interface BillService {
 
     void changeBillInfoById(Integer id, Map<String,String> map);
 
+    List<Bill> getAllBills();
+
 }

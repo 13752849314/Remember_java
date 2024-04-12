@@ -55,4 +55,9 @@ public class BillServiceImpl implements BillService {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    @Override
+    public List<Bill> getAllBills() {
+        return billMapper.selectList(null);
+    }
 }
