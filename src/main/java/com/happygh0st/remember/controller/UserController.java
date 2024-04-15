@@ -6,10 +6,10 @@ import com.happygh0st.remember.common.Roles;
 import com.happygh0st.remember.entity.User;
 import com.happygh0st.remember.service.UserService;
 import com.happygh0st.remember.utils.JwtUtils;
+import com.happygh0st.remember.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +19,11 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final UserUtils userUtils;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserUtils userUtils) {
         this.userService = userService;
+        this.userUtils = userUtils;
     }
 
     @GetMapping("/users")
@@ -34,7 +36,13 @@ public class UserController {
     @GetMapping("/user")
     @Roles(value = Role.ADMIN)
     public Results getAllUser() {
-        List<User> users = userService.getAllUser();
+        User user = userUtils.getUser();
+        List<User> users;
+        if (user.getRoles().equals(Role.ADMINS.getValue())) {
+            users = userService.getAllUsers();
+        } else {
+            users = userService.getAllUser();
+        }
         return Results.StatusOk().addData("user", users).setMessage("获取用户成功");
     }
 
@@ -71,7 +79,7 @@ public class UserController {
 
     @PostMapping("/delete")
     @Roles()
-    public Results Delete(@RequestHeader("jwt") String token, @RequestBody LinkedHashMap<String, String> map) {
+    public Results Delete(@RequestHeader("jwt") String token, @RequestBody Map<String, String> map) {
         try {
             Map<String, Object> user = JwtUtils.checkToken(token);
             userService.Delete((String) user.get("username"), map.get("username"));
@@ -83,7 +91,7 @@ public class UserController {
 
     @PostMapping("/changeP")
     @Roles()
-    public Results ChangePassword(@RequestBody LinkedHashMap<String, String> map) {
+    public Results ChangePassword(@RequestBody Map<String, String> map) {
         try {
             userService.ChangePassword(map.get("old_password"), map.get("new_password"));
             return Results.StatusOk().setMessage("密码修改成功，请重新登录");
@@ -105,7 +113,7 @@ public class UserController {
 
     @PostMapping("/changeI")
     @Roles()
-    public Results ChangeUserInfo(@RequestBody LinkedHashMap<String, String> map) {
+    public Results ChangeUserInfo(@RequestBody Map<String, String> map) {
         try {
             userService.ChangeUserInfo(map);
             return Results.StatusOk().setMessage("信息修改成功");

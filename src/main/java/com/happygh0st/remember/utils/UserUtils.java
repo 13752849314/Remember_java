@@ -1,6 +1,7 @@
 package com.happygh0st.remember.utils;
 
 import com.happygh0st.remember.common.Modifiable;
+import com.happygh0st.remember.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -66,6 +67,11 @@ public class UserUtils {
             return requestAttributes.getRequest();
         }
         throw new RuntimeException("请求失败");
+    }
+
+    public User getUser() {
+        HttpServletRequest request = getRequest();
+        return (User) request.getAttribute("user");
     }
 
     public LocalDateTime getLocalTime() {

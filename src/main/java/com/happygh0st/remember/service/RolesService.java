@@ -13,9 +13,11 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -61,7 +63,13 @@ public class RolesService {
         Object[] args = point.getArgs();
         Class<?>[] param = new Class[args.length];
         for (int i = 0; i < args.length; i++) {
-            param[i] = args[i].getClass();
+            if (args[i] instanceof Map) {
+                param[i] = Map.class;
+            } else if (args[i] instanceof MultipartFile) {
+                param[i] = MultipartFile.class;
+            } else {
+                param[i] = args[i].getClass();
+            }
         }
         Method method = targetClass.getMethod(point.getSignature().getName(), param); // 拿到接口方法
         Roles annotation = method.getAnnotation(Roles.class); // 拿到接口上指定注解

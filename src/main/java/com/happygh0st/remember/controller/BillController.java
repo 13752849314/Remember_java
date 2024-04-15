@@ -11,8 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -59,7 +59,7 @@ public class BillController {
 
     @PostMapping("/changeBI/{id}")
     @Roles()
-    public Results changeBillInfoById(@PathVariable("id") Integer id, @RequestBody LinkedHashMap<String, String> map) {
+    public Results changeBillInfoById(@PathVariable("id") Integer id, @RequestBody Map<String, String> map) {
         try {
             billService.changeBillInfoById(id, map);
             return Results.StatusOk().setMessage("信息修改成功");
