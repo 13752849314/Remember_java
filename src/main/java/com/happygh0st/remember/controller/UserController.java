@@ -121,4 +121,15 @@ public class UserController {
             return Results.StatusErr().setMessage(e.getMessage());
         }
     }
+
+    @PostMapping("/add")
+    @Roles(value = Role.ADMIN)
+    public Results addUser(@RequestBody User user) {
+        try {
+            userService.addUser(user);
+            return Results.StatusOk().setMessage("添加成功");
+        } catch (Exception e) {
+            return Results.StatusErr().setMessage(e.getMessage());
+        }
+    }
 }

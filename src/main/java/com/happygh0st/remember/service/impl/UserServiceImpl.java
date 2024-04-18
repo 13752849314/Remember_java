@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(Util.PasswordEncrypt(user.getPassword()));
         LocalDateTime now = LocalDateTime.now();
+        user.setRoles("user"); // 通过注册的用户只能为 user
         user.setCreated_at(now);
         user.setUpdated_at(now);
         userMapper.insert(user);
@@ -143,6 +144,21 @@ public class UserServiceImpl implements UserService {
             userMapper.updateById(user);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void addUser(User user) {
+        User userC = userUtils.getUser();
+        if (Role.ge(userC.getRoles(), user.getRoles())) {
+            user.setPassword(Util.PasswordEncrypt(user.getPassword()));
+            LocalDateTime now = userUtils.getLocalTime();
+            user.setCreated_at(now);
+            user.setUpdated_at(now);
+            userMapper.insert(user);
+            log.info("新用户：{}添加成功", user.getUsername());
+        } else {
+            throw new RuntimeException("权限不够");
         }
     }
 }

@@ -18,4 +18,9 @@ public enum Role {
         return value.equals(ADMIN.getValue()) && this.value.equals(USER.getValue());
     }
 
+    public static boolean ge(String controller, String controlled) {
+        if (controller.equals(ADMINS.getValue()) && !controlled.equals(ADMINS.getValue())) return true;
+        return controller.equals(ADMIN.getValue()) && controlled.equals(USER.getValue());
+    }
+
 }
