@@ -83,7 +83,7 @@ public class UserUtils {
         for (Field field : fields) {
             String name = field.getName();
             String s = map.get(name);
-            if (s == null) continue;
+            if (s == null || s.equals("")) continue;
             Modifiable modifiable = field.getDeclaredAnnotation(anno);
             if (modifiable.value()) { // 可修改
                 field.setAccessible(true);
