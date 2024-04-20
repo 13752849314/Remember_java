@@ -2,6 +2,8 @@ server:
   port: 4090
 
 spring:
+  application:
+    name: Remember
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -11,6 +13,8 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  jackson:
+    time-zone: GMT+8
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml

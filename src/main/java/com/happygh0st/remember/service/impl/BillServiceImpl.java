@@ -8,7 +8,7 @@ import com.happygh0st.remember.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +31,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public void addBill(Bill bill) {
-        LocalDateTime now = LocalDateTime.now();
+        Date now = userUtils.getLocalTime();
         bill.setCreated_at(now);
         bill.setUpdated_at(now);
         billMapper.insert(bill);
@@ -40,7 +40,7 @@ public class BillServiceImpl implements BillService {
     @Override
     public void deleteBillById(Integer id) {
         Bill bill = billMapper.getBillById(id);
-        bill.setDeleted_at(LocalDateTime.now());
+        bill.setDeleted_at(userUtils.getLocalTime());
         billMapper.updateById(bill);
     }
 

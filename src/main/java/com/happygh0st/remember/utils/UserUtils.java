@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -74,8 +73,8 @@ public class UserUtils {
         return (User) request.getAttribute("user");
     }
 
-    public LocalDateTime getLocalTime() {
-        return LocalDateTime.now();
+    public Date getLocalTime() {
+        return new Date();
     }
 
     public <T> void changeFields(T t, Map<String, String> map, Class<Modifiable> anno) throws Exception {

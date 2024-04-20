@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.happygh0st.remember.common.Modifiable;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -18,13 +17,16 @@ public class Bill {
     private Integer id;
 
     @TableField("created_at")
-    private LocalDateTime created_at;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date created_at;
 
     @TableField("updated_at")
-    private LocalDateTime updated_at;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updated_at;
 
     @TableField("deleted_at")
-    private LocalDateTime deleted_at;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date deleted_at;
 
     private String username;
 

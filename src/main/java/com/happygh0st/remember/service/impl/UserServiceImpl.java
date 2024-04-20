@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("用户名已经存在");
         }
         user.setPassword(Util.PasswordEncrypt(user.getPassword()));
-        LocalDateTime now = LocalDateTime.now();
+        Date now = new Date();
         user.setRoles("user"); // 通过注册的用户只能为 user
         user.setCreated_at(now);
         user.setUpdated_at(now);
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
         }
         String userCRoles = userC.getRoles();
         String userRoles = user.getRoles();
-        LocalDateTime now = LocalDateTime.now();
+        Date now = new Date();
         user.setDeleted_at(now);
         user.setUpdated_at(now);
         if (controller.equals(username)) {
@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService {
         User userC = userUtils.getUser();
         if (Role.ge(userC.getRoles(), user.getRoles())) {
             user.setPassword(Util.PasswordEncrypt(user.getPassword()));
-            LocalDateTime now = userUtils.getLocalTime();
+            Date now = userUtils.getLocalTime();
             user.setCreated_at(now);
             user.setUpdated_at(now);
             userMapper.insert(user);
