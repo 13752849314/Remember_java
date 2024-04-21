@@ -19,7 +19,7 @@ public enum Role {
     }
 
     public static boolean ge(String controller, String controlled) {
-        if (controller.equals(ADMINS.getValue()) && !controlled.equals(ADMINS.getValue())) return true;
+        if (controller.equals(ADMINS.getValue())) return true;
         return controller.equals(ADMIN.getValue()) && controlled.equals(USER.getValue());
     }
 
