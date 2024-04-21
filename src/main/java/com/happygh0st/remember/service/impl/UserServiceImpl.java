@@ -148,6 +148,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void ChangeUserInfo(Integer id, Map<String, String> map) {
+        User userC = userUtils.getUser();
+        User user = userMapper.selectById(id);
+        if (Role.ge(userC.getRoles(), user.getRoles()) || userC.getUsername().equals(user.getUsername())) {
+            try {
+                userUtils.changeFields(user, map, Modifiable.class);
+                user.setUpdated_at(userUtils.getLocalTime());
+                userMapper.updateById(user);
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        } else {
+            throw new RuntimeException("权限不够");
+        }
+    }
+
+    @Override
     public void addUser(User user) {
         User userC = userUtils.getUser();
         if (Role.ge(userC.getRoles(), user.getRoles())) {

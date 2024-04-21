@@ -122,6 +122,17 @@ public class UserController {
         }
     }
 
+    @PostMapping("/changeI/{id}")
+    @Roles(value = Role.ADMIN)
+    public Results ChangeUserInfo(@PathVariable Integer id, @RequestBody Map<String, String> map) {
+        try {
+            userService.ChangeUserInfo(id, map);
+            return Results.StatusOk().setMessage("信息修改成功");
+        } catch (Exception e) {
+            return Results.StatusErr().setMessage(e.getMessage());
+        }
+    }
+
     @PostMapping("/add")
     @Roles(value = Role.ADMIN)
     public Results addUser(@RequestBody User user) {

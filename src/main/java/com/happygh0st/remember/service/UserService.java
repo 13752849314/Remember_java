@@ -19,11 +19,13 @@ public interface UserService {
 
     void Delete(String controller, String username);
 
-    void ChangePassword(String oldPassword,String newPassword);
+    void ChangePassword(String oldPassword, String newPassword);
 
     User getUserInfo();
 
-    void ChangeUserInfo(Map<String,String> map);
+    void ChangeUserInfo(Map<String, String> map);
+
+    void ChangeUserInfo(Integer id, Map<String, String> map);
 
     void addUser(User user);
 }
