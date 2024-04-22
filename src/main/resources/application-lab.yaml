@@ -2,11 +2,19 @@ server:
   port: 4090
 
 spring:
+  application:
+    name: Remember
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
     url: jdbc:mysql://192.168.1.100:3306/remember?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  jackson:
+    time-zone: GMT+8
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
@@ -14,6 +22,7 @@ mybatis-plus:
     map-underscore-to-camel-case: false
 remember:
   key: happygh0st123456
+  filePath: G:\Remember\files\
 logging:
   file:
     path: G:\Remember\logs\
