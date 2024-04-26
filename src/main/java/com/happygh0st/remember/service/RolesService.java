@@ -16,8 +16,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -67,6 +67,8 @@ public class RolesService {
                 param[i] = Map.class;
             } else if (args[i] instanceof MultipartFile) {
                 param[i] = MultipartFile.class;
+            } else if (args[i] instanceof HttpServletResponse) {
+                param[i] = HttpServletResponse.class;
             } else {
                 param[i] = args[i].getClass();
             }
