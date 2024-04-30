@@ -10,7 +10,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("system_message")
+@TableName("systemMessages")
 public class SystemMessage {
 
     @TableId(value = "id", type = IdType.AUTO)
