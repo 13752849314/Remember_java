@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.happygh0st.remember.mapper.SystemMessageMapper">
+    <select id="getPublicMessages" resultType="com.happygh0st.remember.entity.SystemMessage">
+        select *
+        from `systemmessages`
+        where (`publish_time` is not null) and (`publish_time` <![CDATA[<=]]> now())
+        and (`deleted_at` is null)
+    </select>
 </mapper>
