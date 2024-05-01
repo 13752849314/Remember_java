@@ -47,7 +47,7 @@ public class JwtUtils {
         map.put("id", user.getId());
         map.put("username", user.getUsername());
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR, 3);
+        calendar.add(Calendar.HOUR, 1);
         map.put("ExpiresAt", TimeFormat.format(calendar.getTime()));
         String s = JSON.toJSONString(map);
         return encrypt(s, key);
