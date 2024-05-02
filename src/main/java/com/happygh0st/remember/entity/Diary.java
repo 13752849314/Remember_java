@@ -34,6 +34,8 @@ public class Diary {
 
     private String mood;
 
+    private String username;
+
     private String weather;
 
     private String type;
