@@ -3,7 +3,7 @@
 <mapper namespace="com.happygh0st.remember.mapper.SystemMessageMapper">
     <select id="getPublicMessages" resultType="com.happygh0st.remember.entity.SystemMessage">
         select *
-        from `systemmessages`
+        from `systemMessages`
         where (`publish_time` is not null) and (`publish_time` <![CDATA[<=]]> now())
         and (`deleted_at` is null)
     </select>
